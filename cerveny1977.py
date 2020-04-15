@@ -7,6 +7,96 @@ Zoeppritz equation, explicit form, Cerveny 1977.
 from math import pi, sin, sqrt
 from cmath import phase
 from utils import elapar_hs2ratio
+import numpy as np
+from zoepd import pdr1, pdr2, pdr3, pdr4
+
+
+def main():
+    # test_modeling()
+    test_inv()
+
+
+def test_modeling():
+    import numpy as np
+
+    # Two half spaces elastic model
+    # vp1, vp2 = 3.0, 2.0
+    # vs1, vs2 = 1.5, 1.0
+    # ro1, ro2 = 2.3, 2.0
+    vp1, vp2 = 2.0, 4.0
+    vs1, vs2 = 0.88, 1.54
+    ro1, ro2 = 2.0, 2.3
+
+    # Change parameterization
+    r1, r2, r3, r4 = elapar_hs2ratio(vp1, vs1, ro1, vp2, vs2, ro2)
+
+    # Define angles
+    ans = np.arange(0, 90, 1)
+    for angle in ans:
+        amp, pha = cervey1977(r1, r2, r3, r4, angle)
+        print("ang,amp,pha =", angle, amp, pha)
+
+
+def test_inv():
+    # Two half spaces elastic model
+    # vp1, vp2 = 3.0, 2.0
+    # vs1, vs2 = 1.5, 1.0
+    # ro1, ro2 = 2.3, 2.0
+    vp1, vp2 = 4.0, 2.0
+    vs1, vs2 = 2.0, 1.0
+    ro1, ro2 = 2.4, 2.0
+
+    # Change parameterization
+    r1, r2, r3, r4 = elapar_hs2ratio(vp1, vs1, ro1, vp2, vs2, ro2)
+
+    # Define angles
+    angles = np.arange(1, 60, 6)
+
+    # Calculate the reflection amplitude or b in Ax=b
+    m = len(angles)
+    rpp = np.zeros(m)
+    for i in range(m):
+        angle = angles[i]
+        amp, pha = cervey1977(r1, r2, r3, r4, angle)
+        rpp[i] = amp
+
+    print("Target model:", r1, r2, r3, r4)
+    r1_ini = 2.4 / 4.0
+    r2_ini = 2.2 / 4.0
+    r3_ini = 1.3 / 4.0
+    r4_ini = 1.6 / 2.4
+    x_ini = (r1_ini, r2_ini, r3_ini, r4_ini)
+    print("Initial model:", x_ini)
+
+    for i in range(5):
+        x_new = inv1itr(angles, rpp, x_ini)
+        x_ini = x_new
+
+
+def inv1itr(angles, rpp, x_ini):
+    r1_ini, r2_ini, r3_ini, r4_ini = x_ini
+    m = len(angles)
+    rpp_ini = np.zeros(m)
+    A = np.zeros((m, 4))
+    for i in range(m):
+        angle = angles[i]
+        amp, pha = cervey1977(r1_ini, r2_ini, r3_ini, r4_ini, angle)
+        rpp_ini[i] = amp
+
+        # Calculate the Jacobian matrix A in Ax=b
+        fr1 = pdr1(r1_ini, r2_ini, r3_ini, r4_ini, angle)
+        fr2 = pdr2(r1_ini, r2_ini, r3_ini, r4_ini, angle)
+        fr3 = pdr3(r1_ini, r2_ini, r3_ini, r4_ini, angle)
+        fr4 = pdr4(r1_ini, r2_ini, r3_ini, r4_ini, angle)
+        A[i] = [fr1, fr2, fr3, fr4]
+
+    A *= -1  # needed when we take abs of negative rpp
+    b_dif = rpp - rpp_ini
+    lstsq = np.linalg.lstsq(A, b_dif, rcond=None)
+    x_dif = lstsq[0]
+    x_new = x_ini + x_dif
+    print("Updated", x_new)
+    return x_new
 
 
 def cervey1977(r1, r2, r3, r4, inc_angle):
@@ -91,27 +181,6 @@ def complex_sqrt(r, angle):
     else:
         crsr = complex(0., -rsr)
     return crsr
-
-
-def main():
-    import numpy as np
-
-    # Two half spaces elastic model
-    # vp1, vp2 = 3.0, 2.0
-    # vs1, vs2 = 1.5, 1.0
-    # ro1, ro2 = 2.3, 2.0
-    vp1, vp2 = 2.0, 4.0
-    vs1, vs2 = 0.88, 1.54
-    ro1, ro2 = 2.0, 2.3
-
-    # Change parameterization
-    r1, r2, r3, r4 = elapar_hs2ratio(vp1, vs1, ro1, vp2, vs2, ro2)
-
-    # Define angles
-    ans = np.arange(0, 90, 1)
-    for angle in ans:
-        amp, pha = cervey1977(r1, r2, r3, r4, angle)
-        print("ang,amp,pha =", angle, amp, pha)
 
 
 if __name__ == '__main__':

@@ -153,6 +153,8 @@ def pdr1(r1, r2, r3, r4, angle):
     grad : float
         gradient or partial derivative w.r.t. r1
     """
+    if angle <= 0 or angle >= 90:
+        raise ValueError("Unsupported angle value {}".format(angle))
     angle = angle * pi / 180.0
     stability_check(r1, angle)
     Q, T0, T1, T2, T3 = getqt(r1, r2, r3, r4, angle)
@@ -247,6 +249,8 @@ def pdr2(r1, r2, r3, r4, angle):
     grad : float
         gradient or partial derivative w.r.t. r2
     """
+    if angle <= 0 or angle >= 90:
+        raise ValueError("Unsupported angle value {}".format(angle))
     angle = angle * pi / 180.0
     stability_check(r1, angle)
     Q, T0, T1, T2, T3 = getqt(r1, r2, r3, r4, angle)
@@ -352,6 +356,8 @@ def pdr3(r1, r2, r3, r4, angle):
     grad : float
         gradient or partial derivative w.r.t. r3
     """
+    if angle <= 0 or angle >= 90:
+        raise ValueError("Unsupported angle value {}".format(angle))
     angle = angle * pi / 180.0
     stability_check(r1, angle)
     Q, T0, T1, T2, T3 = getqt(r1, r2, r3, r4, angle)
@@ -455,6 +461,8 @@ def pdr4(r1, r2, r3, r4, angle):
     grad : float
         gradient or partial derivative w.r.t. r4
     """
+    if angle <= 0 or angle >= 90:
+        raise ValueError("Unsupported angle value {}".format(angle))
     angle = angle * pi / 180.0
     stability_check(r1, angle)
     Q, T0, T1, T2, T3 = getqt(r1, r2, r3, r4, angle)

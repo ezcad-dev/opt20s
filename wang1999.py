@@ -50,7 +50,7 @@ def wang1999_inv():
     A = wang1999_jac(vs_vp_ratio, ro_rd_ini, vs_rd_ini, ave_angles)
 
     b_dif = rpp - rpp_ini
-    lstsq = np.linalg.lstsq(A, b_dif)
+    lstsq = np.linalg.lstsq(A, b_dif, rcond=None)
     x_dif = lstsq[0]
     print("Update", x_dif)
     print("Updated", x_ini + x_dif)
