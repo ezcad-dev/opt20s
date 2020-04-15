@@ -1,0 +1,39 @@
+bld.bat
+bugs.txt
+todo.txt
+note.txt
+commit.msg
+notes
+*.log
+
+# testing code snippet from online
+ezcad/tmp
+*.c
+
+# Cython build
+build
+
+# python setup.py bdist_wheel
+dist
+ezcad.egg-info
+
+# Byte-compiled / optimized / DLL files
+__pycache__
+*.py[cod]
+
+# VIM temporary and swap files
+*~
+*.swp
+*.swo
+
+# PyCharm project setting (IntelliJ IDE)
+.idea
+
+# Sphinx documentation build
+doc/_build/*
+
+# Environment variable for dotenv
+.env
+
+# Reference papers
+*.pdf
