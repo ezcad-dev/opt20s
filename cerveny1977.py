@@ -20,12 +20,12 @@ def test_modeling():
     import numpy as np
 
     # Two half spaces elastic model
-    # vp1, vp2 = 3.0, 2.0
-    # vs1, vs2 = 1.5, 1.0
-    # ro1, ro2 = 2.3, 2.0
-    vp1, vp2 = 2.0, 4.0
-    vs1, vs2 = 0.88, 1.54
-    ro1, ro2 = 2.0, 2.3
+    vp1, vp2 = 3.0, 2.0
+    vs1, vs2 = 1.5, 1.0
+    ro1, ro2 = 2.3, 2.0
+    # vp1, vp2 = 2.0, 4.0
+    # vs1, vs2 = 0.88, 1.54
+    # ro1, ro2 = 2.0, 2.3
 
     # Change parameterization
     r1, r2, r3, r4 = elapar_hs2ratio(vp1, vs1, ro1, vp2, vs2, ro2)
@@ -33,7 +33,8 @@ def test_modeling():
     # Define angles
     ans = np.arange(0, 90, 1)
     for angle in ans:
-        amp, pha = cervey1977(r1, r2, r3, r4, angle)
+        # amp, pha = cervey1977(r1, r2, r3, r4, angle, amp_type='abs')
+        amp, pha = cervey1977(r1, r2, r3, r4, angle, amp_type='real')
         print("ang,amp,pha =", angle, amp, pha)
 
 
@@ -90,7 +91,7 @@ def inv1itr(angles, rpp, x_ini):
         fr4 = pdr4(r1_ini, r2_ini, r3_ini, r4_ini, angle)
         A[i] = [fr1, fr2, fr3, fr4]
 
-    A *= -1  # needed when we take abs of negative rpp
+    # A *= -1  # needed when we take abs of negative rpp
     b_dif = rpp - rpp_ini
     lstsq = np.linalg.lstsq(A, b_dif, rcond=None)
     x_dif = lstsq[0]
@@ -99,7 +100,7 @@ def inv1itr(angles, rpp, x_ini):
     return x_new
 
 
-def cervey1977(r1, r2, r3, r4, inc_angle):
+def cervey1977(r1, r2, r3, r4, inc_angle, amp_type='real'):
     """
     Calculate Rpp using Zoeppritz equation, explicit and exact, Zhu 2012.
 
@@ -115,11 +116,14 @@ def cervey1977(r1, r2, r3, r4, inc_angle):
         Ro2 / Ro1
     inc_angle : float
         incident angle in degrees
+    amp_type : str
+        amplitude type, 'abs' for absolute value, 'real' for the real part
+        of a complex number which preserves the sign.
 
     Returns
     -------
     amp : float
-        Amplitude, modulus or absolute value of the complex Rpp
+        Amplitude
     pha : float
         Phase in degrees
     """
@@ -151,7 +155,12 @@ def cervey1977(r1, r2, r3, r4, inc_angle):
     upp = F - E + D - C - B + A
     low = F + E + D + C + B + A
     rpp = upp / low
-    amp = abs(rpp)
+    if amp_type is 'abs':
+        amp = abs(rpp)
+    elif amp_type is 'real':
+        amp = rpp.real
+    else:
+        raise ValueError("Unknown amplitude type")
     pha = phase(rpp) * 180. / pi
 
     return amp, pha

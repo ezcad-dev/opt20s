@@ -35,7 +35,7 @@ def test_pd():
         a1, _ = cervey1977(r1, r2, r3, r4, angle)
         a2, _ = cervey1977(r1+delta, r2, r3, r4, angle)
         fr_num = (a2 - a1) / delta
-        res = abs(fr_ana) - abs(fr_num)
+        res = fr_ana - fr_num
 
         print("pdr1 =", vp2, r1, fr_ana, fr_num, abs(res))
 
@@ -58,7 +58,7 @@ def test_pd():
         a1, _ = cervey1977(r1, r2, r3, r4, angle)
         a2, _ = cervey1977(r1, r2+delta, r3, r4, angle)
         fr_num = (a2 - a1) / delta
-        res = abs(fr_ana) - abs(fr_num)
+        res = fr_ana - fr_num
 
         print("pdr2 =", vs1, r2, fr_ana, fr_num, abs(res))
 
@@ -81,7 +81,7 @@ def test_pd():
         a1, _ = cervey1977(r1, r2, r3, r4, angle)
         a2, _ = cervey1977(r1, r2, r3+delta, r4, angle)
         fr_num = (a2 - a1) / delta
-        res = abs(fr_ana) - abs(fr_num)
+        res = fr_ana - fr_num
 
         print("pdr3 =", vs2, r3, fr_ana, fr_num, abs(res))
 
@@ -104,7 +104,7 @@ def test_pd():
         a1, _ = cervey1977(r1, r2, r3, r4, angle)
         a2, _ = cervey1977(r1, r2, r3, r4+delta, angle)
         fr_num = (a2 - a1) / delta
-        res = abs(fr_ana) - abs(fr_num)
+        res = fr_ana - fr_num
 
         print("pdr4 =", ro2, r4, fr_ana, fr_num, abs(res))
 
