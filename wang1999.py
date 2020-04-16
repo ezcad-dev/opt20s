@@ -29,9 +29,9 @@ def wang1999_inv():
 
     # Define angles
     angles = np.arange(0, 60, 6)
-    ave_angles = inc2ave_angle(angles, vp_rd)
 
     # Calculate the reflection amplitude or b in Ax=b
+    ave_angles = inc2ave_angle(angles, vp_rd)
     rpp = wang1999(vs_vp_ratio, ro_rd, vp_rd, vs_rd, ave_angles)
 
     print("Target model:", ro_rd, vp_rd, vs_rd)
@@ -41,6 +41,16 @@ def wang1999_inv():
     x_ini = (ro_rd_ini, vp_rd_ini, vs_rd_ini)
     print("Initial model:", x_ini)
 
+    for i in range(9):
+        x_new = inv1itr(angles, rpp, x_ini, vs_vp_ratio)
+        print("Updated", x_new)
+        x_ini = x_new
+
+
+def inv1itr(angles, rpp, x_ini, vs_vp_ratio=0.5):
+    ro_rd_ini, vp_rd_ini, vs_rd_ini = x_ini
+
+    ave_angles = inc2ave_angle(angles, vp_rd_ini)
     rpp_ini = wang1999(vs_vp_ratio, ro_rd_ini, vp_rd_ini, vs_rd_ini, ave_angles)
 
     # Calculate the Jacobian matrix A in Ax=b
@@ -49,8 +59,8 @@ def wang1999_inv():
     b_dif = rpp - rpp_ini
     lstsq = np.linalg.lstsq(A, b_dif, rcond=None)
     x_dif = lstsq[0]
-    print("Update", x_dif)
-    print("Updated", x_ini + x_dif)
+    x_new = x_ini + x_dif
+    return x_new
 
 
 def wang1999(vs_vp_ratio, ro_rd, vp_rd, vs_rd, average_angles,
