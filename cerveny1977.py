@@ -71,10 +71,28 @@ def test_inv():
 
     for i in range(5):
         x_new = inv1itr(angles, rpp, x_ini)
+        print("Updated", x_new)
         x_ini = x_new
 
 
 def inv1itr(angles, rpp, x_ini):
+    """
+    One iteration of linearized inversion.
+
+    Parameters
+    ----------
+    angles : array
+        incident angles in degrees.
+    rpp : array
+        Rpp amplitude at the angles, also the b in Ax=b.
+    x_ini : tuple
+        Initial or starting model of this iteration.
+
+    Returns
+    -------
+    x_new : tuple
+        Updated model
+    """
     r1_ini, r2_ini, r3_ini, r4_ini = x_ini
     m = len(angles)
     rpp_ini = np.zeros(m)
@@ -96,7 +114,6 @@ def inv1itr(angles, rpp, x_ini):
     lstsq = np.linalg.lstsq(A, b_dif, rcond=None)
     x_dif = lstsq[0]
     x_new = x_ini + x_dif
-    print("Updated", x_new)
     return x_new
 
 

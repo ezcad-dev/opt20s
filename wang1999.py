@@ -48,6 +48,25 @@ def wang1999_inv():
 
 
 def inv1itr(angles, rpp, x_ini, vs_vp_ratio=0.5):
+    """
+    One iteration of linearized inversion.
+
+    Parameters
+    ----------
+    angles : array
+        incident angles in degrees.
+    rpp : array
+        Rpp amplitude at the angles, also the b in Ax=b.
+    x_ini : tuple
+        Initial or starting model of this iteration.
+    vs_vp_ratio
+        Vs/Vp ratio, assumed known a priori.
+
+    Returns
+    -------
+    x_new : tuple
+        Updated model
+    """
     ro_rd_ini, vp_rd_ini, vs_rd_ini = x_ini
 
     ave_angles = inc2ave_angle(angles, vp_rd_ini)
