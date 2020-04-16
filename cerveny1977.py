@@ -33,8 +33,8 @@ def test_modeling():
     # Define angles
     ans = np.arange(0, 90, 1)
     for angle in ans:
-        # amp, pha = cervey1977(r1, r2, r3, r4, angle, amp_type='abs')
-        amp, pha = cervey1977(r1, r2, r3, r4, angle, amp_type='real')
+        # amp, pha = cerveny1977(r1, r2, r3, r4, angle, amp_type='abs')
+        amp, pha = cerveny1977(r1, r2, r3, r4, angle, amp_type='real')
         print("ang,amp,pha =", angle, amp, pha)
 
 
@@ -58,7 +58,7 @@ def test_inv():
     rpp = np.zeros(m)
     for i in range(m):
         angle = angles[i]
-        amp, pha = cervey1977(r1, r2, r3, r4, angle)
+        amp, pha = cerveny1977(r1, r2, r3, r4, angle)
         rpp[i] = amp
 
     print("Target model:", r1, r2, r3, r4)
@@ -81,7 +81,7 @@ def inv1itr(angles, rpp, x_ini):
     A = np.zeros((m, 4))
     for i in range(m):
         angle = angles[i]
-        amp, pha = cervey1977(r1_ini, r2_ini, r3_ini, r4_ini, angle)
+        amp, pha = cerveny1977(r1_ini, r2_ini, r3_ini, r4_ini, angle)
         rpp_ini[i] = amp
 
         # Calculate the Jacobian matrix A in Ax=b
@@ -100,7 +100,7 @@ def inv1itr(angles, rpp, x_ini):
     return x_new
 
 
-def cervey1977(r1, r2, r3, r4, inc_angle, amp_type='real'):
+def cerveny1977(r1, r2, r3, r4, inc_angle, amp_type='real'):
     """
     Calculate Rpp using Zoeppritz equation, explicit and exact, Zhu 2012.
 
