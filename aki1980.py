@@ -82,7 +82,8 @@ def aki1980_coe(vs_vp_ratio, average_angles):
     return A
 
 
-def aki1980(vs_vp_ratio, ro_rd, vp_rd, vs_rd, average_angles):
+def aki1980(vs_vp_ratio, ro_rd, vp_rd, vs_rd, average_angles,
+            amp_type='real'):
     """
     Calculate PP reflection amplitude using Aki and Richards (1980)
     linear approximation to the Zoeppritz equation.
@@ -106,6 +107,8 @@ def aki1980(vs_vp_ratio, ro_rd, vp_rd, vs_rd, average_angles):
     average_angles : array
         average of incident and transmission angles.
         The unit is degree. Length is m.
+    amp_type : str
+        amplitude type, 'abs' for absolute value, 'real' for the real value.
 
     Returns
     -------
@@ -115,7 +118,12 @@ def aki1980(vs_vp_ratio, ro_rd, vp_rd, vs_rd, average_angles):
     A = aki1980_coe(vs_vp_ratio, average_angles)
     x = np.array([ro_rd, vp_rd, vs_rd])
     R = np.matmul(A, x)
-    return np.abs(R)
+    if amp_type is 'real':
+        return R
+    elif amp_type is 'abs':
+        return np.abs(R)
+    else:
+        raise ValueError("Unknown amplitude type")
 
 
 if __name__ == '__main__':

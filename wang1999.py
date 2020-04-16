@@ -56,7 +56,8 @@ def wang1999_inv():
     print("Updated", x_ini + x_dif)
 
 
-def wang1999(vs_vp_ratio, ro_rd, vp_rd, vs_rd, average_angles):
+def wang1999(vs_vp_ratio, ro_rd, vp_rd, vs_rd, average_angles,
+             amp_type='real'):
     """
     Calculate PP reflection amplitude using Wang (1999)
     quadratic approximation (equation 10)
@@ -71,7 +72,12 @@ def wang1999(vs_vp_ratio, ro_rd, vp_rd, vs_rd, average_angles):
     quad_coef = vs_vp_ratio ** 3 * np.cos(angles) * np.sin(angles) ** 2
     quad_term = (ro_rd + 2 * vs_rd)**2
     R += quad_coef * quad_term
-    return np.abs(R)
+    if amp_type is 'real':
+        return R
+    elif amp_type is 'abs':
+        return np.abs(R)
+    else:
+        raise ValueError("Unknown amplitude type")
 
 
 def wang1999_jac(vs_vp_ratio, ro_rd, vs_rd, average_angles):

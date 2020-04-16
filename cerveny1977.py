@@ -134,7 +134,12 @@ def cerveny1977(r1, r2, r3, r4, inc_angle, amp_type='real'):
         # normal incidence, elastic Rpp reduces to acoustic
         amp = (r1 * r4 - 1) / (r1 * r4 + 1)
         pha = 0. if amp >= 0 else 180.
-        return abs(amp), pha
+        if amp_type is 'real':
+            return amp, pha
+        elif amp_type is 'abs':
+            return abs(amp), pha
+        else:
+            raise ValueError("Unknown amplitude type")
 
     angle = inc_angle / 180. * pi
 
@@ -155,15 +160,13 @@ def cerveny1977(r1, r2, r3, r4, inc_angle, amp_type='real'):
     upp = F - E + D - C - B + A
     low = F + E + D + C + B + A
     rpp = upp / low
-    if amp_type is 'abs':
-        amp = abs(rpp)
-    elif amp_type is 'real':
-        amp = rpp.real
+    pha = phase(rpp) * 180. / pi
+    if amp_type is 'real':
+        return rpp.real, pha
+    elif amp_type is 'abs':
+        return abs(rpp), pha
     else:
         raise ValueError("Unknown amplitude type")
-    pha = phase(rpp) * 180. / pi
-
-    return amp, pha
 
 
 def complex_sqrt(r, angle):
