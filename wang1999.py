@@ -7,7 +7,7 @@ Rpp modeling and inversion with quadratic approximation, Wang 1999.
 from math import pi
 import numpy as np
 from utils import elapar_hs2delta
-from aki1980 import aki1980_coe
+from aki1980 import aki1980_coe, inc2ave_angle
 
 
 def main():
@@ -28,11 +28,8 @@ def wang1999_inv():
         elapar_hs2delta(vp1, vs1, ro1, vp2, vs2, ro2)
 
     # Define angles
-    t1s = np.arange(0, 60, 6)
-    t1s_r = t1s / 180. * pi
-    t2s_r = np.arcsin(vp2 / vp1 * np.sin(t1s_r))
-    t2s = t2s_r / pi * 180.
-    ave_angles = 0.5 * (t1s + t2s)
+    angles = np.arange(0, 60, 6)
+    ave_angles = inc2ave_angle(angles, vp_rd)
 
     # Calculate the reflection amplitude or b in Ax=b
     rpp = wang1999(vs_vp_ratio, ro_rd, vp_rd, vs_rd, ave_angles)

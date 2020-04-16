@@ -28,11 +28,8 @@ def aki1980_inv():
         elapar_hs2delta(vp1, vs1, ro1, vp2, vs2, ro2)
 
     # Define angles
-    t1s = np.arange(0, 60, 6)
-    t1s_r = t1s / 180. * pi
-    t2s_r = np.arcsin(vp2 / vp1 * np.sin(t1s_r))
-    t2s = t2s_r / pi * 180.
-    ave_angles = 0.5 * (t1s + t2s)
+    angles = np.arange(0, 60, 6)
+    ave_angles = inc2ave_angle(angles, vp_rd)
 
     # Calculate the coefficient matrix A in Ax=b
     A = aki1980_coe(vs_vp_ratio, ave_angles)
@@ -46,14 +43,40 @@ def aki1980_inv():
 
     rm = aki1980(vs_vp_ratio, x[0], x[1], x[2], ave_angles)
 
-    m = len(t1s)
+    m = len(angles)
     for i in range(m):
-        print(t1s[i], A[i], rpp[i], rm[i])
+        print(angles[i], A[i], rpp[i], rm[i])
 
     print("-------------------------------")
     print("Model ro, vp, vs reldif =", ro_rd, vp_rd, vs_rd)
     print('Gurobi opt x =', x)
     print(np.linalg.lstsq(A, rpp))
+
+
+def inc2ave_angle(inc_angles, vp_rd):
+    """
+    Calculate average angle from incident angle.
+
+    Parameters
+    ----------
+    inc_angles : array
+        incident angles in degrees.
+    vp_rd : float
+        relative difference of Vp.
+        Say background (average) Vp is bv = (vp2 + vp1) / 2.
+        vp_rd = (vp2 - vp1) / bd
+
+    Returns
+    -------
+    ave_angles : array
+        average angles in degrees.
+    """
+    r1 = (2 + vp_rd) / (2 - vp_rd)  # r1 = vp2 / vp1
+    t1 = inc_angles / 180. * pi
+    t2 = np.arcsin(r1 * np.sin(t1))
+    ref_angles = t2 / pi * 180.
+    ave_angles = 0.5 * (inc_angles + ref_angles)
+    return ave_angles
 
 
 def aki1980_coe(vs_vp_ratio, average_angles):
