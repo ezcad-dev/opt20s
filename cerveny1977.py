@@ -75,7 +75,7 @@ def test_inv():
         x_ini = x_new
 
 
-def inv1itr(angles, rpp, x_ini):
+def inv1itr(angles, rpp, x_ini, scale=1, constraints={}):
     """
     One iteration of linearized inversion.
 
@@ -87,13 +87,27 @@ def inv1itr(angles, rpp, x_ini):
         Rpp amplitude at the angles, also the b in Ax=b.
     x_ini : tuple
         Initial or starting model of this iteration.
+    scale : float
+        Scale to the model update
+    constraints : dict
+        constraints e.g. {'r2': 0.5}
 
     Returns
     -------
     x_new : tuple
         Updated model
     """
-    r1_ini, r2_ini, r3_ini, r4_ini = x_ini
+    x_ini_copy = [x for x in x_ini]
+    if 'r1' in constraints:
+        x_ini_copy[0] = constraints['r1']
+    if 'r2' in constraints:
+        x_ini_copy[1] = constraints['r2']
+    if 'r3' in constraints:
+        x_ini_copy[2] = constraints['r3']
+    if 'r4' in constraints:
+        x_ini_copy[3] = constraints['r4']
+    r1_ini, r2_ini, r3_ini, r4_ini = x_ini_copy
+
     m = len(angles)
     rpp_ini = np.zeros(m)
     A = np.zeros((m, 4))
@@ -113,7 +127,15 @@ def inv1itr(angles, rpp, x_ini):
     b_dif = rpp - rpp_ini
     lstsq = np.linalg.lstsq(A, b_dif, rcond=None)
     x_dif = lstsq[0]
-    x_new = x_ini + x_dif
+    if 'r1' in constraints:
+        x_dif[0] = 0
+    if 'r2' in constraints:
+        x_dif[1] = 0
+    if 'r3' in constraints:
+        x_dif[2] = 0
+    if 'r4' in constraints:
+        x_dif[3] = 0
+    x_new = x_ini_copy + x_dif * scale
     return x_new
 
 
