@@ -80,12 +80,12 @@ def rps_cer1977(r1, r2, r3, r4, inc_angle, amp_type='real'):
 
     upp = 2 * CT2 * (G + H) / r2
     low = F + E + D + C + B + A
-    rpp = upp / low
-    pha = phase(rpp) * 180. / pi
+    rps = upp / low
+    pha = phase(rps) * 180. / pi
     if amp_type is 'real':
-        return rpp.real, pha
+        return rps.real, pha
     elif amp_type is 'abs':
-        return abs(rpp), pha
+        return abs(rps), pha
     else:
         raise ValueError("Unknown amplitude type")
 
