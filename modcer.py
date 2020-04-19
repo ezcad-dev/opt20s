@@ -12,6 +12,20 @@ def main():
     pass
 
 
+def physics_check(r1, r2, r3, r4, inc_angle):
+    """Equation 6 in Zhu and McMechan 2014"""
+    if inc_angle < 0 or inc_angle >= 90:
+        raise ValueError("Wrong angle {}".format(inc_angle))
+    if r1 <= 0:
+        raise ValueError("Nonphysical r1 {}".format(r1))
+    if r2 <= 0 or r2 > 0.707:
+        raise ValueError("Nonphysical r2 {}".format(r2))
+    if r3 <= 0 or r3 >= r1:
+        raise ValueError("Nonphysical r3 {}".format(r3))
+    if r4 <= 0:
+        raise ValueError("Nonphysical r4 {}".format(r4))
+
+
 def rps_cer1977(r1, r2, r3, r4, inc_angle, amp_type='real'):
     """
     Calculate Rps using Zoeppritz equation, explicit and exact, Zhu 2014.
@@ -39,8 +53,7 @@ def rps_cer1977(r1, r2, r3, r4, inc_angle, amp_type='real'):
     pha : float
         Phase in degrees
     """
-    if inc_angle < 0 or inc_angle >= 90:
-        raise ValueError("Wrong angle value")
+    physics_check(r1, r2, r3, r4, inc_angle)
 
     if inc_angle == 0:
         # normal incidence, no PS conversion
@@ -104,8 +117,7 @@ def rpp_cer1977(r1, r2, r3, r4, inc_angle, amp_type='real'):
     pha : float
         Phase in degrees
     """
-    if inc_angle < 0 or inc_angle >= 90:
-        raise ValueError("Wrong angle value")
+    physics_check(r1, r2, r3, r4, inc_angle)
 
     if inc_angle == 0:
         # normal incidence, elastic Rpp reduces to acoustic

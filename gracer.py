@@ -5,7 +5,7 @@ Zoeppritz partial derivatives
 """
 
 from math import pi, sin, cos, sqrt
-from modcer import rpp_cer1977
+from modcer import rpp_cer1977, physics_check
 
 
 def main():
@@ -90,8 +90,7 @@ def ppr1(r1, r2, r3, r4, angle):
     grad : float
         gradient or partial derivative w.r.t. r1
     """
-    if angle <= 0 or angle >= 90:
-        raise ValueError("Unsupported angle value {}".format(angle))
+    physics_check(r1, r2, r3, r4, angle)
     angle = angle * pi / 180.0
     stability_check(r1, angle)
     Q, T0, T1, T2, T3 = getqt(r1, r2, r3, r4, angle)
@@ -186,8 +185,7 @@ def ppr2(r1, r2, r3, r4, angle):
     grad : float
         gradient or partial derivative w.r.t. r2
     """
-    if angle <= 0 or angle >= 90:
-        raise ValueError("Unsupported angle value {}".format(angle))
+    physics_check(r1, r2, r3, r4, angle)
     angle = angle * pi / 180.0
     stability_check(r1, angle)
     Q, T0, T1, T2, T3 = getqt(r1, r2, r3, r4, angle)
@@ -293,8 +291,7 @@ def ppr3(r1, r2, r3, r4, angle):
     grad : float
         gradient or partial derivative w.r.t. r3
     """
-    if angle <= 0 or angle >= 90:
-        raise ValueError("Unsupported angle value {}".format(angle))
+    physics_check(r1, r2, r3, r4, angle)
     angle = angle * pi / 180.0
     stability_check(r1, angle)
     Q, T0, T1, T2, T3 = getqt(r1, r2, r3, r4, angle)
@@ -398,8 +395,7 @@ def ppr4(r1, r2, r3, r4, angle):
     grad : float
         gradient or partial derivative w.r.t. r4
     """
-    if angle <= 0 or angle >= 90:
-        raise ValueError("Unsupported angle value {}".format(angle))
+    physics_check(r1, r2, r3, r4, angle)
     angle = angle * pi / 180.0
     stability_check(r1, angle)
     Q, T0, T1, T2, T3 = getqt(r1, r2, r3, r4, angle)
