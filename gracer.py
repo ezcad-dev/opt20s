@@ -5,10 +5,45 @@ Zoeppritz partial derivatives
 """
 
 from math import pi, sin, cos, sqrt
+from modcer import rpp_cer1977
 
 
 def main():
     pass
+
+
+def gradient(r1, r2, r3, r4, angle, mode, rid, method='numeric', delta=0.001):
+    gra = 0
+    if method is 'numeric':
+        gra = pdn(r1, r2, r3, r4, angle, mode, rid, delta=delta)
+    elif method is 'analytic':
+        if mode is 'PP':
+            if rid == 1:
+                gra = ppr1(r1, r2, r3, r4, angle)
+            elif rid == 2:
+                gra = ppr2(r1, r2, r3, r4, angle)
+            elif rid == 3:
+                gra = ppr3(r1, r2, r3, r4, angle)
+            elif rid == 4:
+                gra = ppr4(r1, r2, r3, r4, angle)
+            else:
+                raise ValueError("Illegal ratio index")
+        elif mode is 'PS':
+            if rid == 1:
+                gra = psr1(r1, r2, r3, r4, angle)
+            elif rid == 2:
+                gra = psr2(r1, r2, r3, r4, angle)
+            elif rid == 3:
+                gra = psr3(r1, r2, r3, r4, angle)
+            elif rid == 4:
+                gra = psr4(r1, r2, r3, r4, angle)
+            else:
+                raise ValueError("Illegal ratio index")
+        else:
+            raise ValueError("Unsupported wave mode")
+    else:
+        raise ValueError("Illegal method")
+    return gra
 
 
 def stability_check(r1, angle):
@@ -30,7 +65,7 @@ def getqt(r1, r2, r3, r4, angle):
     return Q, T0, T1, T2, T3
 
 
-def pdr1(r1, r2, r3, r4, angle):
+def ppr1(r1, r2, r3, r4, angle):
     """
     Zoeppritz partial derivative w.r.t. r1.
 
@@ -126,7 +161,7 @@ def pdr1(r1, r2, r3, r4, angle):
     return grad
 
 
-def pdr2(r1, r2, r3, r4, angle):
+def ppr2(r1, r2, r3, r4, angle):
     """
     Zoeppritz partial derivative w.r.t. r2.
 
@@ -233,7 +268,7 @@ def pdr2(r1, r2, r3, r4, angle):
     return grad
 
 
-def pdr3(r1, r2, r3, r4, angle):
+def ppr3(r1, r2, r3, r4, angle):
     """
     Zoeppritz partial derivative w.r.t. r3.
 
@@ -338,7 +373,7 @@ def pdr3(r1, r2, r3, r4, angle):
     return grad
 
 
-def pdr4(r1, r2, r3, r4, angle):
+def ppr4(r1, r2, r3, r4, angle):
     """
     Zoeppritz partial derivative w.r.t. r4.
 
@@ -432,6 +467,84 @@ def pdr4(r1, r2, r3, r4, angle):
 
     grad = tm_d1 + tm_d2
     return grad
+
+
+def psr1(r1, r2, r3, r4, angle):
+    raise NotImplementedError
+
+
+def psr2(r1, r2, r3, r4, angle):
+    raise NotImplementedError
+
+
+def psr3(r1, r2, r3, r4, angle):
+    raise NotImplementedError
+
+
+def psr4(r1, r2, r3, r4, angle):
+    raise NotImplementedError
+
+
+def pdn(r1, r2, r3, r4, angle, mode, rid, delta=0.001):
+    """
+    Calculate partial derivatives numerically by perturbation.
+
+    Parameters
+    ----------
+    r1 : float
+        Vp2 / Vp1
+    r2 : float
+        Vs1 / Vp1
+    r3 : float
+        Vs2 / Vp1
+    r4 : float
+        Ro2 / Ro1
+    angle : float
+        incident angle in degrees
+    mode : str
+        'PP' or 'PS'
+    rid : int
+        1-4 corresponds to r1, r2, r3, r4
+    delta : float
+        perturbation amount
+
+    Returns
+    -------
+    grad : float
+        gradient or partial derivative w.r.t. r1
+    """
+    a1, a2, gra = 0, 0, 0
+    if mode is 'PP':
+        a1, _ = rpp_cer1977(r1, r2, r3, r4, angle)
+        if rid == 1:
+            r1 += delta
+        elif rid == 2:
+            r2 += delta
+        elif rid == 3:
+            r3 += delta
+        elif rid == 4:
+            r4 += delta
+        else:
+            raise ValueError("Illegal ratio index")
+        a2, _ = rpp_cer1977(r1, r2, r3, r4, angle)
+        gra = (a2 - a1) / delta
+    elif mode is 'PS':
+        a1, _ = rps_cer1977(r1, r2, r3, r4, angle)
+        if rid == 1:
+            r1 += delta
+        elif rid == 2:
+            r2 += delta
+        elif rid == 3:
+            r3 += delta
+        elif rid == 4:
+            r4 += delta
+        else:
+            raise ValueError("Illegal ratio index")
+        a2, _ = rps_cer1977(r1, r2, r3, r4, angle)
+        gra = (a2 - a1) / delta
+    else:
+        raise ValueError("Unsupported wave mode")
+    return gra
 
 
 if __name__ == '__main__':
