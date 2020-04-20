@@ -48,9 +48,6 @@ class Test(unittest.TestCase):
         err = r1 - x_new[0]
         self.assertLessEqual(err, 0.001)
 
-    def test_2(self):
-        self.assertTrue(True)
-
 
 if __name__ == '__main__':
     unittest.main()

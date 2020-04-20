@@ -821,7 +821,7 @@ def pdn(r1, r2, r3, r4, angle, mode, rid, delta=0.001):
         a2, _ = rpp_cer1977(r1, r2, r3, r4, angle)
         gra = (a2 - a1) / delta
     elif mode is 'PS':
-        a1, _ = rps_cer1977(r1, r2, r3, r4, angle)
+        a1, _ = rps_cer1977(r1, r2, r3, r4, angle, amp_type='abs')
         if rid == 1:
             r1 += delta
         elif rid == 2:
@@ -832,7 +832,7 @@ def pdn(r1, r2, r3, r4, angle, mode, rid, delta=0.001):
             r4 += delta
         else:
             raise ValueError("Illegal ratio index")
-        a2, _ = rps_cer1977(r1, r2, r3, r4, angle)
+        a2, _ = rps_cer1977(r1, r2, r3, r4, angle, amp_type='abs')
         gra = (a2 - a1) / delta
     else:
         raise ValueError("Unsupported wave mode")

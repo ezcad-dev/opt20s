@@ -6,7 +6,7 @@ Linearized inversion
 
 import numpy as np
 from modcer import rpp_cer1977
-from gracer import pdr1, pdr2, pdr3, pdr4
+from gracer import gradient
 
 
 def main():
@@ -55,10 +55,10 @@ def cer1itr(angles, rpp, x_ini, scale=1, constraints={}):
         rpp_ini[i] = amp
 
         # Calculate the Jacobian matrix A in Ax=b
-        fr1 = pdr1(r1_ini, r2_ini, r3_ini, r4_ini, angle)
-        fr2 = pdr2(r1_ini, r2_ini, r3_ini, r4_ini, angle)
-        fr3 = pdr3(r1_ini, r2_ini, r3_ini, r4_ini, angle)
-        fr4 = pdr4(r1_ini, r2_ini, r3_ini, r4_ini, angle)
+        fr1 = gradient(r1_ini, r2_ini, r3_ini, r4_ini, angle, 'PP', 1)
+        fr2 = gradient(r1_ini, r2_ini, r3_ini, r4_ini, angle, 'PP', 2)
+        fr3 = gradient(r1_ini, r2_ini, r3_ini, r4_ini, angle, 'PP', 3)
+        fr4 = gradient(r1_ini, r2_ini, r3_ini, r4_ini, angle, 'PP', 4)
         A[i] = [fr1, fr2, fr3, fr4]
 
     # A *= -1  # needed when we take abs of negative rpp
