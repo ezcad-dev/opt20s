@@ -6,7 +6,7 @@ Rpp modeling and inversion with quadratic approximation, Wang 1999.
 
 from math import pi
 import numpy as np
-from modaki import aki1980_coe
+from zoeppritz.modaki import aki1980_coe
 
 
 def main():

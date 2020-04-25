@@ -5,9 +5,8 @@ Rpp modeling and inversion with linearized approximation, Aki 1980.
 """
 
 import numpy as np
-from optimize import optimize_l1
-from utils import elapar_hs2delta
-from modaki import inc2ave_angle, aki1980_coe, aki1980
+from zoeppritz.utils import elapar_hs2delta
+from zoeppritz.modaki import inc2ave_angle, aki1980_coe, aki1980
 
 
 def main():
@@ -37,6 +36,7 @@ def aki1980_inv():
     # Calculate the reflection amplitude or b in Ax=b
     rpp = aki1980(vs_vp_ratio, ro_rd, vp_rd, vs_rd, ave_angles)
 
+    from .optimize import optimize_l1
     model, x = optimize_l1(A, rpp)
     print('Obj: %g' % model.objVal)
     print('x =', x)

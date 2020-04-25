@@ -5,8 +5,8 @@ Linearized inversion
 """
 
 import numpy as np
-from modcer import rpp_cer1977, rps_cer1977
-from gracer import gradient
+from zoeppritz.modcer import rpp_cer1977, rps_cer1977
+from zoeppritz.gracer import gradient
 
 
 def main():

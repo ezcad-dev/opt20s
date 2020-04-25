@@ -2,8 +2,8 @@
 # Copyright (c) Ezcad Development Team. All Rights Reserved.
 
 import unittest
-from utils import elapar_hs2ratio
-from gracer import gradient
+from zoeppritz.utils import elapar_hs2ratio
+from zoeppritz.gracer import gradient
 
 
 class Test(unittest.TestCase):

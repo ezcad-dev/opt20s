@@ -3,10 +3,10 @@
 
 import unittest
 import numpy as np
-from utils import elapar_hs2delta
-from modaki import inc2ave_angle
-from modwan import wang1999
-from invwan import wan1itr
+from zoeppritz.utils import elapar_hs2delta
+from zoeppritz.modaki import inc2ave_angle
+from zoeppritz.modwan import wang1999
+from zoeppritz.invwan import wan1itr
 
 
 class Test(unittest.TestCase):

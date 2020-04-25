@@ -3,8 +3,8 @@
 
 import unittest
 # import numpy as np
-from utils import elapar_hs2ratio
-from modcer import rpp_cer1977, rps_cer1977
+from zoeppritz.utils import elapar_hs2ratio
+from zoeppritz.modcer import rpp_cer1977, rps_cer1977
 
 
 class Test(unittest.TestCase):

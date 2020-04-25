@@ -5,7 +5,7 @@ Zoeppritz partial derivatives
 """
 
 from math import pi, sin, cos, sqrt
-from modcer import rpp_cer1977, rps_cer1977, physics_check
+from zoeppritz.modcer import rpp_cer1977, rps_cer1977, physics_check
 
 
 def main():
