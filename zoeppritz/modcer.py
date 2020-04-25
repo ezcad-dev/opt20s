@@ -20,7 +20,7 @@ def physics_check(r1, r2, r3, r4, inc_angle):
         raise ValueError("Nonphysical r1 {}".format(r1))
     if r2 <= 0 or r2 > 0.707:
         raise ValueError("Nonphysical r2 {}".format(r2))
-    if r3 <= 0 or r3 >= r1:
+    if r3 <= 0 or r3 > 0.707 * r1:
         raise ValueError("Nonphysical r3 {}".format(r3))
     if r4 <= 0:
         raise ValueError("Nonphysical r4 {}".format(r4))
