@@ -8,10 +8,6 @@ from math import pi
 import numpy as np
 
 
-def main():
-    pass
-
-
 def inc2ave_angle(inc_angles, vp_rd):
     """
     Calculate average angle from incident angle.
@@ -106,7 +102,3 @@ def aki1980(vs_vp_ratio, ro_rd, vp_rd, vs_rd, average_angles,
         return np.abs(R)
     else:
         raise ValueError("Unknown amplitude type")
-
-
-if __name__ == '__main__':
-    main()

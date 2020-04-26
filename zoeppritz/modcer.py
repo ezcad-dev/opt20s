@@ -8,10 +8,6 @@ from math import pi, sin, sqrt
 from cmath import phase
 
 
-def main():
-    pass
-
-
 def physics_check(r1, r2, r3, r4, inc_angle):
     """Equation 6 in Zhu and McMechan 2014"""
     if inc_angle < 0 or inc_angle >= 90:
@@ -182,7 +178,3 @@ def complex_sqrt(r, angle):
     else:
         crsr = complex(0., -rsr)
     return crsr
-
-
-if __name__ == '__main__':
-    main()

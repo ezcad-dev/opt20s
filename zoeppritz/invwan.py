@@ -10,10 +10,6 @@ from zoeppritz.modaki import aki1980_coe, inc2ave_angle
 from zoeppritz.modwan import wang1999
 
 
-def main():
-    pass
-
-
 def wan1itr(angles, rpp, x_ini, vs_vp_ratio=0.5):
     """
     One iteration of linearized inversion.
@@ -83,7 +79,3 @@ def wang1999_jac(vs_vp_ratio, ro_rd, vs_rd, average_angles):
     A[:, 0] += quad_coef * quad_ro_pd
     A[:, 2] += quad_coef * quad_vs_pd
     return A
-
-
-if __name__ == '__main__':
-    main()

@@ -9,10 +9,6 @@ from zoeppritz.modcer import rpp_cer1977, rps_cer1977
 from zoeppritz.gracer import gradient
 
 
-def main():
-    pass
-
-
 def cer1itr(angles, rpp, x_ini, rps=None, fm='numeric', scale=1,
     constraints={}):
     """
@@ -99,7 +95,3 @@ def cer1itr(angles, rpp, x_ini, rps=None, fm='numeric', scale=1,
         x_dif[3] = 0
     x_new = x_ini_copy + x_dif * scale
     return x_new
-
-
-if __name__ == '__main__':
-    main()

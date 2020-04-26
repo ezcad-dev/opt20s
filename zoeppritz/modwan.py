@@ -9,10 +9,6 @@ import numpy as np
 from zoeppritz.modaki import aki1980_coe
 
 
-def main():
-    pass
-
-
 def wang1999(vs_vp_ratio, ro_rd, vp_rd, vs_rd, average_angles,
              amp_type='real'):
     """
@@ -35,7 +31,3 @@ def wang1999(vs_vp_ratio, ro_rd, vp_rd, vs_rd, average_angles,
         return np.abs(R)
     else:
         raise ValueError("Unknown amplitude type")
-
-
-if __name__ == '__main__':
-    main()

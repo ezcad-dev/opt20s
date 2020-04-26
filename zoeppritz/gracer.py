@@ -8,10 +8,6 @@ from math import pi, sin, cos, sqrt
 from zoeppritz.modcer import rpp_cer1977, rps_cer1977, physics_check
 
 
-def main():
-    pass
-
-
 def gradient(r1, r2, r3, r4, angle, mode, rid, method='numeric', delta=0.001):
     gra = 0
     if method is 'numeric':
@@ -837,7 +833,3 @@ def pdn(r1, r2, r3, r4, angle, mode, rid, delta=0.001):
     else:
         raise ValueError("Unsupported wave mode")
     return gra
-
-
-if __name__ == '__main__':
-    main()
