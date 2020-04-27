@@ -29,7 +29,6 @@ def modeling(model, inc_angles, equation, reflection):
     rc : array
         amplitude and phase of the reflection coefficients at the angles.
         The array shape is mx3 of columns: incident angle, amplitude, phase.
-
     """
     # Change parameterization
     vp1, vs1, ro1, vp2, vs2, ro2 = model
@@ -46,7 +45,7 @@ def modeling(model, inc_angles, equation, reflection):
         ad = float(e)
         angles = np.arange(a1, a2, ad)
     else:
-        angles = [float(a) for a in inc_angles.split(',')]
+        angles = np.array([float(a) for a in inc_angles.split(',')])
     ave_angles = inc2ave_angle(angles, vp_rd)
 
     m = len(angles)
