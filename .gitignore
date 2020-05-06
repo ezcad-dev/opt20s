@@ -10,6 +10,7 @@ pynb/*.ipynb
 pynb/.ipynb_checkpoints
 tmp
 .coverage
+*.pptx
 
 # testing code snippet from online
 ezcad/tmp
